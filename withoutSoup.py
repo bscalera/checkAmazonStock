@@ -1,3 +1,7 @@
+#import urllib2
+#from BeautifulSoup import BeautifulSoup
+#import re
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -13,40 +17,83 @@ headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Geck
 #result = requests.get("https://www.amazon.com/HP-EliteDesk-800-G1-Refurbished/dp/B0784F3NHF", headers=headers)
 result = requests.get("https://www.amazon.com/HP-EliteDesk-800-G1-Refurbished/dp/B0784F82Q5", headers=headers)
 
-#you can get the status code for the page
+#.findNext('td')
 #print(result.status_code)
+
 
 #print(result.headers)
 
-
 src = result.content
-
-#lxml needs to be installed separately
+#print(src)
 soup = BeautifulSoup(src, 'lxml')
 
-#Change from soup object to byte object
+divs = soup.find("div")
+#print(links)
+
+#for div in divs:
+#  if "left in stock" in divs.text:
+#    print (div)
+
+#print(result)
+
+#body = soup.find(text= "stock")
+#print(body)
+
+
+
+
+
+#opener = urllib2.buildopener()
+#opener.addheaders = 
+
+
+#search = result.find('stock')
+#print ("this:", search)
+
+#print (soup.find('stock'))
+
+#output to file
+#outF = open("output.txt", "wb")
+#outF.write(soup.encode('utf-8'))
+#outF.close()
+
+
 textable = soup.encode('utf-8')
 
-#Change from byte object to string object
+#for item in textable.encode().split("\n"):
+#  if "stock" in item:
+#    print (item.strip())
+
+
+#print(textable)
+#print(isinstance(textable))
+#print(type(textable))
+
 encoding = 'utf-8'
 transformToString = textable.decode(encoding)
-#Print object type
 print(type(transformToString))
 
+#for item in transformToString.encode().split("\n"):
+#  if "stock" in item:
+#    print (item.strip())
+
+#with transformToString as search:
+#  for line in search:
+#    line.rstrip()
+#    if num == line:
+#      print(line)
 
 
 #-------this works for In Stock
 #foundStringIndex = transformToString.find("In Stock")
 #print(foundStringIndex)
+
 #shownString = transformToString[foundStringIndex : foundStringIndex+8]
 #print(shownString)
 
-#This works for only a few left in stock
-#Find the place on the page where it says the number left in stock
+
 foundStringIndex = transformToString.find("left in stock")
-#print the index where left in stock was found
 print(foundStringIndex)
-#If it was found, show the number left in stock
 if foundStringIndex > 10:
   shownString = transformToString[foundStringIndex-8 : foundStringIndex+13]
   print(shownString)
